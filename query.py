@@ -42,7 +42,7 @@ query = """SELECT period, sub_code,
                   COUNT (*) AS Nb_UVC, 
                   SUM(quantity) AS Nb_uvc,
                   SUM(spend_amount) AS CA 
-          FROM RPCM.temp_equaco
+          FROM data
           GROUP BY sub_code, period"""
           
 df = pd.read_sql_query(query, disk_engine)
