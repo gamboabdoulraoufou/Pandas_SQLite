@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime as dt
 from sqlalchemy import create_engine
 
 # Initialise database in test_db file
@@ -13,7 +14,7 @@ def load_data(in_file, disk_engine):
     index_start = 1
 
     # Loop on each chunck of dataframe
-    for df in pd.read_csv('test_file.csv', chunksize=chunksize, iterator=True, encoding='utf-8'):
+    for df in pd.read_csv(in_file, chunksize=chunksize, iterator=True, encoding='utf-8'):
         df = df.rename(columns={c: c.replace(' ', '') for c in df.columns}) # Remove spaces from columns
         df['quantity'] = df['quantity'].astype(float)
         df['spend_amount'] = df['spend_amount'].astype(float)
@@ -32,6 +33,9 @@ def load_data(in_file, disk_engine):
         df.to_sql('data', disk_engine, if_exists='append')
         index_start = df.index[-1] + 1
 
+in_file="trx_proc_1.csv"
+load_data(in_file, disk_engine)
+ 
 # Query data
 query = """SELECT period, sub_code,
                   COUNT (DISTINCT hhk_code) AS Nb_client,
