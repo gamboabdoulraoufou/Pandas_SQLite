@@ -44,6 +44,9 @@ query = """SELECT period, sub_code,
                   SUM(spend_amount) AS CA 
           FROM data
           GROUP BY sub_code, period"""
-          
+
+start = dt.datetime.now()
 df = pd.read_sql_query(query, disk_engine)
+(dt.datetime.now() - start).seconds
+
 df.head()
